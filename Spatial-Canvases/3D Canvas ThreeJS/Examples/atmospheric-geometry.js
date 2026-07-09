@@ -1,5 +1,5 @@
-// rotating-primitives.js
-// Three.js scene: rotating primitives with dramatic lighting and blue fog
+// atmospheric-geometry.js
+// Three.js scene: cones and boxes with MeshStandardMaterial, lights, and fog
 
 (function() {
   // Scene, camera, renderer setup
@@ -7,79 +7,86 @@
   const camera = new THREE.PerspectiveCamera(60, 800 / 400, 0.1, 50);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(800, 400);
-  renderer.setClearColor(0xe6f3ff); // Background matches fog color
+  renderer.setClearColor(0xf7f3ea); // Light Bauhaus-inspired background
+  renderer.shadowMap.enabled = true;
 
   document.getElementById('threejs-container-3').appendChild(renderer.domElement);
 
-  // Add light pastel blue fog - following Three.js manual pattern
-  scene.fog = new THREE.Fog(0xe6f3ff, 3, 15); // Light pastel blue fog starting at 3, ending at 15
+  // Add atmospheric fog
+  scene.fog = new THREE.Fog(0xf7f3ea, 4, 18);
 
+  // Add lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
 
+  const directionalLight = new THREE.DirectionalLight(0xfff6e6, 1.0);
+  directionalLight.position.set(8, 12, 6);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.camera.left = -10;
+  directionalLight.shadow.camera.right = 10;
+  directionalLight.shadow.camera.top = 10;
+  directionalLight.shadow.camera.bottom = -10;
+  scene.add(directionalLight);
 
+  // Add a ground plane for shadows
+  const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f1e8, roughness: 0.95, metalness: 0.0 });
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), planeMaterial);
+  plane.rotation.x = -Math.PI / 2;
+  plane.position.y = -0.05;
+  plane.receiveShadow = true;
+  scene.add(plane);
 
+  // Geometry materials
+  const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xe63946, roughness: 0.3, metalness: 0.25 });
+  const coneMaterialA = new THREE.MeshStandardMaterial({ color: 0xf4d35e, roughness: 0.45, metalness: 0.1 });
+  const coneMaterialB = new THREE.MeshStandardMaterial({ color: 0x14213d, roughness: 0.25, metalness: 0.4 });
 
-  // Create 3D primitives with pink color palette
-  const colors = [0xff69b4, 0xff1493, 0xff007f]; // Pink palette
+  const group = new THREE.Group();
 
-  // Cube - positioned close and low
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(2, 2, 2),
-    new THREE.MeshBasicMaterial({ 
-      color: colors[0]
-    })
-  );
-  cube.position.set(-4, 1, 2);
-  scene.add(cube);
+  // Create 3 boxes
+  for (let i = 0; i < 3; i++) {
+    const box = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.2, 1.6), boxMaterial);
+    box.position.set(-3 + i * 3.0, 0.6, -1);
+    box.castShadow = true;
+    box.receiveShadow = true;
+    box.rotation.set(0.05 * i, 0.25 * i, -0.07 * i);
+    group.add(box);
+  }
 
-  // Cone - positioned medium distance and height
-  const cone = new THREE.Mesh(
-    new THREE.ConeGeometry(1.5, 3, 32),
-    new THREE.MeshBasicMaterial({ 
-      color: colors[1]
-    })
-  );
-  cone.position.set(0, 2.5, 4);
-  scene.add(cone);
+  // Create 6 cones
+  for (let i = 0; i < 6; i++) {
+    const radius = 0.35 + (i % 3) * 0.1;
+    const height = 1.4 + (i % 2) * 0.4;
+    const material = i % 2 === 0 ? coneMaterialA : coneMaterialB;
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(radius, height, 32), material);
+    const x = -4 + (i % 3) * 3.5;
+    const z = i < 3 ? 2.5 : 5.5;
+    cone.position.set(x, height / 2 + 0.1, z);
+    cone.castShadow = true;
+    cone.rotation.set(-0.12, 0.16 * i, 0);
+    group.add(cone);
+  }
 
-  // Cylinder - positioned far and high
-  const cylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.2, 1.2, 3.6, 32),
-    new THREE.MeshBasicMaterial({ 
-      color: colors[2]
-    })
-  );
-  cylinder.position.set(6, 4, 6);
-  scene.add(cylinder);
+  scene.add(group);
 
-  // Camera position for good view of all objects
-  camera.position.set(-10, 8, 4);
-  camera.lookAt(0, 2, 0);
+  // Camera position
+  camera.position.set(-10, 8, 14);
+  camera.lookAt(0, 1.5, 0);
 
   // OrbitControls
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.1;
+  controls.dampingFactor = 0.08;
   controls.screenSpacePanning = false;
-  controls.minDistance = 8;
+  controls.minDistance = 6;
   controls.maxDistance = 40;
-  controls.target.set(0, 2, 0);
+  controls.target.set(0, 1.5, 1.5);
 
-  // Animation loop with different rotation speeds
+  // Animation
   function animate() {
     requestAnimationFrame(animate);
-    
-    // Rotate each primitive at different speeds
-    cube.rotation.y += 0.02; // Slow rotation
-    cube.rotation.x += 0.01;
-    
-    cone.rotation.y += 0.03; // Medium rotation
-    cone.rotation.z += 0.015;
-    
-    cylinder.rotation.y += 0.04; // Fast rotation
-    cylinder.rotation.x += 0.02;
-    
     controls.update();
     renderer.render(scene, camera);
   }
   animate();
-})(); 
+})();
