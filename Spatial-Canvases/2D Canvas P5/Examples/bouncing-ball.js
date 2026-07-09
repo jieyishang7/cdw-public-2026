@@ -1,41 +1,100 @@
-// Bouncing Ball Sketch - using p5.js instance mode
+// Interactive animated sketch - using p5.js instance mode
 var sketch2 = function(p) {
-  // All variables are scoped to this instance
-  var x, y; // Ball position
-  var dx, dy; // Ball velocity
-  var radius = 30; // Ball radius
+  var particles = [];
+  var columns = 16;
 
   p.setup = function() {
-    // Create the canvas and attach it to the container
     var canvas = p.createCanvas(800, 400);
     canvas.parent('canvas-container-2');
 
-    // Initialize ball position and velocity
-    x = p.width / 2;
-    y = p.height / 2;
-    dx = 4;
-    dy = 3;
+    for (var i = 0; i < 42; i++) {
+      particles.push({
+        angle: p.random(p.TWO_PI),
+        speed: p.random(0.006, 0.018),
+        orbit: p.random(24, 150),
+        baseX: p.random(90, p.width - 90),
+        baseY: p.random(90, p.height - 90),
+        size: p.random(8, 26)
+      });
+    }
   };
 
   p.draw = function() {
-    // Clear the background
-    p.background(240);
+    p.background(18, 26, 38);
+    drawGradientBands();
+    drawGrid();
+    drawParticles();
+    drawCursorField();
+  };
 
-    // Draw the ball
-    p.fill(100, 180, 255);
+  function drawGradientBands() {
     p.noStroke();
-    p.ellipse(x, y, radius * 2);
-
-    // Update ball position
-    x += dx;
-    y += dy;
-
-    // Bounce off the edges
-    if (x - radius < 0 || x + radius > p.width) {
-      dx *= -1;
+    for (var y = 0; y < p.height; y += 8) {
+      var amount = y / p.height;
+      p.fill(22 + amount * 24, 34 + amount * 18, 50 + amount * 26, 180);
+      p.rect(0, y, p.width, 8);
     }
-    if (y - radius < 0 || y + radius > p.height) {
-      dy *= -1;
+  }
+
+  function drawGrid() {
+    p.stroke(255, 240, 210, 36);
+    p.strokeWeight(1);
+    for (var i = 0; i <= columns; i++) {
+      var x = p.map(i, 0, columns, 40, p.width - 40);
+      p.line(x, 38, x, p.height - 38);
+    }
+    for (var y = 58; y < p.height; y += 42) {
+      p.line(38, y, p.width - 38, y);
+    }
+  }
+
+  function drawParticles() {
+    var mouseInfluence = p.dist(p.mouseX, p.mouseY, p.width / 2, p.height / 2);
+    var hueShift = p.map(mouseInfluence, 0, p.width / 2, 0, 80, true);
+
+    p.noStroke();
+    for (var i = 0; i < particles.length; i++) {
+      var particle = particles[i];
+      particle.angle += particle.speed;
+
+      var pull = p.dist(p.mouseX, p.mouseY, particle.baseX, particle.baseY);
+      var attraction = p.map(pull, 0, 360, 1.55, 0.65, true);
+      var x = particle.baseX + p.cos(particle.angle) * particle.orbit * attraction;
+      var y = particle.baseY + p.sin(particle.angle * 1.4) * particle.orbit * 0.35;
+      var size = particle.size * p.map(pull, 0, 300, 1.7, 0.75, true);
+
+      p.fill(240, 197 - hueShift, 92 + hueShift, 155);
+      p.circle(x, y, size * 2.2);
+      p.fill(96 + hueShift, 188, 198, 230);
+      p.circle(x, y, size);
+    }
+  }
+
+  function drawCursorField() {
+    var mx = p.constrain(p.mouseX, 0, p.width);
+    var my = p.constrain(p.mouseY, 0, p.height);
+
+    p.noFill();
+    p.stroke(248, 238, 213, 170);
+    p.strokeWeight(2);
+    p.circle(mx, my, 70);
+    p.circle(mx, my, 120);
+
+    p.stroke(226, 80, 62, 200);
+    p.strokeWeight(4);
+    p.line(mx - 28, my, mx + 28, my);
+    p.line(mx, my - 28, mx, my + 28);
+
+    p.noStroke();
+    p.fill(248, 238, 213);
+    p.textSize(12);
+    p.text('move cursor to bend the field', 42, p.height - 24);
+  }
+
+  p.mousePressed = function() {
+    for (var i = 0; i < particles.length; i++) {
+      particles[i].baseX = p.lerp(particles[i].baseX, p.mouseX, p.random(0.08, 0.22));
+      particles[i].baseY = p.lerp(particles[i].baseY, p.mouseY, p.random(0.08, 0.22));
     }
   };
 };

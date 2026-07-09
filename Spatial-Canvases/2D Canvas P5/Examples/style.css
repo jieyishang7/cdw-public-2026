@@ -4,8 +4,8 @@
 /* Style the entire body of the webpage */
 body {
   font-family: 'Roboto', sans-serif;  /* Set the font to Roboto, with sans-serif as backup */
-  background-color: #ffffff;          /* Set background color to white */
-  color: #111;                        /* Set text color to dark gray (almost black) */
+  background-color: #f4f0e8;          /* Set background color to a warm off-white */
+  color: #15120f;                     /* Set text color to dark warm gray */
   margin: 0;                          /* Remove default spacing around the body */
   padding: 0;                         /* Remove default internal spacing */
 }
@@ -16,7 +16,7 @@ header {
   justify-content: space-between;     /* Spread items evenly across the header */
   align-items: center;                /* Center items vertically */
   padding: 24px 40px;                 /* Add 24px top/bottom, 40px left/right spacing inside */
-  border-bottom: 1px solid #ccc;      /* Add a light gray line at the bottom */
+  border-bottom: 1px solid #d7cfc2;   /* Add a light line at the bottom */
   font-size: 14px;                    /* Set font size to 14 pixels */
 }
 
@@ -46,7 +46,7 @@ header .right a {
 
 /* Style the main content area */
 main {
-  max-width: 800px;                   /* Limit the maximum width to 800 pixels */
+  max-width: 840px;                   /* Limit the maximum width to 840 pixels */
   margin: 60px auto;                  /* Add 60px top/bottom margin, center horizontally */
   padding: 0 20px;                    /* Add 20px left/right padding, no top/bottom */
 }
@@ -60,7 +60,7 @@ main {
 
 /* Style the main project title */
 .project-title {
-  font-size: 24px;                    /* Set font size to 24 pixels (larger) */
+  font-size: 34px;                    /* Set font size to 34 pixels (larger) */
   font-weight: 400;                   /* Set font weight to normal (not bold) */
   margin-bottom: 4px;                 /* Add 4 pixels of space below this element */
 }
@@ -86,6 +86,7 @@ main {
   margin-top: 40px;                   /* Add 40 pixels of space above this element */
   margin-bottom: 12px;                /* Add 12 pixels of space below this element */
   font-size: 14px;                    /* Set font size to 14 pixels */
+  letter-spacing: 0.08em;             /* Add a small amount of tracking */
 }
 
 /* Style all paragraph elements */
@@ -93,7 +94,7 @@ p {
   font-size: 16px;                    /* Set font size to 16 pixels */
   line-height: 1.6;                   /* Set space between lines to 1.6 times the font size */
   margin-bottom: 24px;                /* Add 24 pixels of space below each paragraph */
-  color: #111;                        /* Set text color to dark gray (almost black) */
+  color: #302923;                     /* Set text color to dark warm gray */
 }
 
 /* Style for our interactive button */
@@ -129,15 +130,32 @@ button:hover {
 
 /* Style for canvas containers to add spacing between them */
 #canvas-container-1,
-#canvas-container-2,
-#canvas-container-3 {
+#canvas-container-2 {
   margin-bottom: 40px;                /* Add 40 pixels of space below each canvas */
-  border: 1px solid #eee;             /* Add a subtle border around each canvas */
-  border-radius: 4px;                 /* Add slightly rounded corners */
+  border: 1px solid #d7cfc2;          /* Add a subtle border around each canvas */
+  border-radius: 8px;                 /* Add slightly rounded corners */
   overflow: hidden;                   /* Ensure canvas content doesn't overflow the border */
+  box-shadow: 0 18px 50px rgba(59, 45, 32, 0.12);
+  background: #fff9f0;
+    /* Ensure the canvas fits exactly inside the framed container */
+    width: 800px;
+    height: 400px;
+    padding: 12px;                      /* inner inset so canvas doesn't touch the frame */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Add extra spacing after the last canvas container */
-#canvas-container-3 {
+#canvas-container-2 {
   margin-bottom: 60px;                /* Extra space after the last canvas */
+}
+
+/* Make p5 canvas scale to fill the inner framed area */
+#canvas-container-1 canvas,
+#canvas-container-2 canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
