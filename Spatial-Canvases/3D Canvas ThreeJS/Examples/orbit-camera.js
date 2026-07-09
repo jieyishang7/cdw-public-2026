@@ -16,45 +16,51 @@
   scene.add(grid);
 
   // Add ambient and directional light
-  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.35);
   scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
-  dirLight.position.set(5, 10, 7);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  dirLight.position.set(8, 12, 6);
+  dirLight.castShadow = true;
   scene.add(dirLight);
 
-  // Add 3D primitives
-  // Box
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(2, 2, 2),
-    new THREE.MeshPhongMaterial({ color: 0x3264a8 })
-  );
-  box.position.set(-5, 1, 0);
-  scene.add(box);
-  // Sphere
-  const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1.2, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xffa500 })
-  );
-  sphere.position.set(0, 1.2, 0);
-  scene.add(sphere);
-  // Cylinder
-  const cylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(1, 1, 2, 32),
-    new THREE.MeshPhongMaterial({ color: 0x4caf50 })
-  );
-  cylinder.position.set(5, 1, 0);
-  scene.add(cylinder);
-  // Cone
-  const cone = new THREE.Mesh(
-    new THREE.ConeGeometry(1, 2, 32),
-    new THREE.MeshPhongMaterial({ color: 0xe91e63 })
-  );
-  cone.position.set(2.5, 1, -4);
-  scene.add(cone);
+  // Add fog for depth
+  scene.fog = new THREE.Fog(0xf0f0f0, 8, 20);
+
+  // Create abstract geometry: 3 boxes and 6 cones
+  const group = new THREE.Group();
+
+  const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x228b22, roughness: 0.35, metalness: 0.25 });
+  const coneMaterial1 = new THREE.MeshStandardMaterial({ color: 0xffc107, roughness: 0.45, metalness: 0.05 });
+  const coneMaterial2 = new THREE.MeshStandardMaterial({ color: 0x3264a8, roughness: 0.2, metalness: 0.2 });
+
+  const boxSize = 1.5;
+  const boxHeight = 1;
+  const boxDepth = 1;
+
+  for (let i = 0; i < 3; i++) {
+    const box = new THREE.Mesh(new THREE.BoxGeometry(boxSize, boxHeight, boxDepth), boxMaterial);
+    box.position.set(-3 + i * 3.0, boxHeight / 2, 0);
+    box.rotation.set(0.05 * i, 0.2 * i, -0.04 * i);
+    group.add(box);
+  }
+
+  for (let i = 0; i < 6; i++) {
+    const coneHeight = 1.4 + (i % 2) * 0.3;
+    const coneRadius = 0.35 + (i % 3) * 0.08;
+    const coneMaterial = i % 2 === 0 ? coneMaterial1 : coneMaterial2;
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(coneRadius, coneHeight, 32), coneMaterial);
+    const xIndex = i % 3;
+    const zOffset = i < 3 ? -1.4 : 1.4;
+    cone.position.set(-3 + xIndex * 3.0, boxHeight + coneHeight / 2 + 0.1, zOffset);
+    cone.rotation.set(-0.1, 0.15 * i, 0);
+    group.add(cone);
+  }
+
+  scene.add(group);
 
   // Camera position
-  camera.position.set(8, 8, 8);
-  camera.lookAt(0, 0, 0);
+  camera.position.set(10, 7, 12);
+  camera.lookAt(0, 1.5, 0);
 
   // OrbitControls
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
