@@ -128,9 +128,11 @@ button:hover {
 }
 
 /* Style for D3.js canvas containers to add spacing between them */
+#d3-container-0,
 #d3-container-1,
 #d3-container-2,
-#d3-container-3 {
+#d3-container-3,
+#d3-container-4 {
   margin-bottom: 40px;                /* Add 40 pixels of space below each canvas */
   border: 1px solid #eee;             /* Add a subtle border around each canvas */
   border-radius: 4px;                 /* Add slightly rounded corners */
@@ -139,13 +141,40 @@ button:hover {
 }
 
 /* Add extra spacing after the last canvas container */
-#d3-container-3 {
+#d3-container-4 {
   margin-bottom: 60px;                /* Extra space after the last canvas */
 }
 
 /* Style for D3.js tooltips */
 .tooltip {
   z-index: 1000;                      /* Ensure tooltip appears above other elements */
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 12px 0;
+}
+
+.filter-controls .filter-button {
+  background-color: #f8fafc;
+  color: #26313d;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  padding: 7px 12px;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-controls .filter-button:hover,
+.filter-controls .filter-button.active {
+  background-color: #eaf2ff;
+  border-color: #bdd7ff;
+  color: #1f4d8f;
+  box-shadow: 0 4px 12px rgba(31, 77, 143, 0.12);
 }
 
 /* Style for important notes and CSV modification sections */

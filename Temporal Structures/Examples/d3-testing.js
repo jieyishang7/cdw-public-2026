@@ -103,7 +103,7 @@
     // Set font size
     .style("font-size", "14px")
     // Set the actual text content
-    .text("X Axis (0-100)");
+    .text("Time Invested (0-100)");
 
   // Add Y-axis label
   svg.append("text")
@@ -118,7 +118,7 @@
     // Set font size
     .style("font-size", "14px")
     // Set the actual text content
-    .text("Y Axis (0-50)");
+    .text("Clarity / Energy (0-50)");
 
   // Add a title to the chart
   
@@ -135,7 +135,7 @@
     // Make the text bold
     .style("font-weight", "bold")
     // Set the actual title text
-    .text("D3.js Foundation: Basic Axes");
+    .text("Personal Coordinate System");
 
 // Close the immediately invoked function expression
 })(); 

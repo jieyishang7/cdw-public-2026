@@ -1,5 +1,5 @@
 // d3-events-foundation.js
-// This script creates a D3.js timeline with major hurricanes hitting the US in the last 10 years
+// This script creates a D3.js timeline with personal milestones.
 
 (function() {
   // Set up the SVG container
@@ -15,20 +15,17 @@
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  // Major hurricanes hitting the US in the last 12 events
+  // Replace these sample rows with your own personal milestones.
   const events = [
-    { date: new Date('2018-09-14'), name: 'Hurricane Florence', category: 'major', location: 'Carolinas', fatalities: 53, damage: '$24B' },
-    { date: new Date('2018-10-10'), name: 'Hurricane Michael', category: 'catastrophic', location: 'Florida Panhandle', fatalities: 74, damage: '$25.5B' },
-    { date: new Date('2019-09-01'), name: 'Hurricane Dorian', category: 'major', location: 'Southeast', fatalities: 84, damage: '$5.1B' },
-    { date: new Date('2020-08-27'), name: 'Hurricane Laura', category: 'major', location: 'Louisiana', fatalities: 77, damage: '$19B' },
-    { date: new Date('2020-10-09'), name: 'Hurricane Delta', category: 'major', location: 'Louisiana', fatalities: 5, damage: '$3B' },
-    { date: new Date('2021-08-29'), name: 'Hurricane Ida', category: 'catastrophic', location: 'Louisiana/Northeast', fatalities: 115, damage: '$75B' },
-    { date: new Date('2022-09-28'), name: 'Hurricane Ian', category: 'catastrophic', location: 'Florida', fatalities: 161, damage: '$112.9B' },
-    { date: new Date('2023-08-30'), name: 'Hurricane Idalia', category: 'major', location: 'Florida', fatalities: 12, damage: '$3.6B' },
-    { date: new Date('2023-10-25'), name: 'Hurricane Otis', category: 'catastrophic', location: 'Mexico/Acapulco', fatalities: 52, damage: '$16B' },
-    { date: new Date('2024-07-08'), name: 'Hurricane Beryl', category: 'catastrophic', location: 'Caribbean/Texas', fatalities: 11, damage: '$2.8B' },
-    { date: new Date('2024-09-16'), name: 'Hurricane Helene', category: 'major', location: 'Southeast', fatalities: 126, damage: '$9.5B' },
-    { date: new Date('2024-10-10'), name: 'Hurricane Milton', category: 'catastrophic', location: 'Florida', fatalities: 18, damage: '$8.5B' }
+    { date: new Date('2018-09-01'), name: 'Started Design Study', category: 'education', location: 'Home / School', intensity: 72, note: 'A first structured encounter with design thinking.' },
+    { date: new Date('2019-06-15'), name: 'First Portfolio', category: 'creative', location: 'Studio', intensity: 58, note: 'Collected early work and began seeing projects as a sequence.' },
+    { date: new Date('2020-03-20'), name: 'Remote Learning Shift', category: 'transition', location: 'Online', intensity: 86, note: 'Daily rhythm changed and digital workflows became central.' },
+    { date: new Date('2021-08-30'), name: 'Collaborative Project', category: 'creative', location: 'Studio', intensity: 64, note: 'Learned how teamwork changes design time.' },
+    { date: new Date('2022-05-20'), name: 'Graduation / Completion', category: 'education', location: 'Campus', intensity: 90, note: 'A closing point that also opened the next phase.' },
+    { date: new Date('2023-02-01'), name: 'Design Internship', category: 'work', location: 'Office', intensity: 76, note: 'Translated academic skills into a professional workflow.' },
+    { date: new Date('2024-09-03'), name: 'GSAPP Semester Begins', category: 'education', location: 'New York', intensity: 92, note: 'A new academic environment with new temporal pressure.' },
+    { date: new Date('2025-01-21'), name: 'Computational Workflows', category: 'creative', location: 'Columbia GSAPP', intensity: 88, note: 'Started using code as a design medium.' },
+    { date: new Date('2025-04-15'), name: 'Temporal Structures', category: 'creative', location: 'Columbia GSAPP', intensity: 80, note: 'Mapped personal time through data visualization.' }
   ];
 
   // Create time scale
@@ -41,10 +38,10 @@
     .domain([0, 100])
     .range([height - 50, 50]);
 
-  // Create color scale for hurricane categories
+  // Create color scale for personal categories
   const colorScale = d3.scaleOrdinal()
-    .domain(['major', 'catastrophic'])
-    .range(['#ff6b6b', '#8b0000']);
+    .domain(['education', 'creative', 'transition', 'work'])
+    .range(['#2f80ed', '#f2994a', '#9b51e0', '#27ae60']);
 
   // Create x-axis (time axis)
   const xAxis = d3.axisBottom(timeScale)
@@ -73,9 +70,9 @@
     .attr('text-anchor', 'middle')
     .style('font-size', '14px')
     .style('fill', '#333')
-    .text('Major Hurricanes (2018-2024)');
+    .text('Personal Milestones (2018-2025)');
 
-  // Add events as circles with size based on damage
+  // Add events as circles with size based on intensity
   const eventCircles = svg.selectAll('.event-circle')
     .data(events)
     .enter()
@@ -84,11 +81,9 @@
     .attr('cx', d => timeScale(d.date))
     .attr('cy', (d, i) => height - 100 - (i * 25)) // Y increases over time (earlier events at bottom)
     .attr('r', d => {
-      // Size based on damage amount
-      const damage = parseFloat(d.damage.replace(/[^0-9.]/g, ''));
-      if (damage > 50) return 12; // Catastrophic
-      if (damage > 10) return 10; // Major
-      return 8; // Minor
+      if (d.intensity > 85) return 12;
+      if (d.intensity > 70) return 10;
+      return 8;
     })
     .attr('fill', d => colorScale(d.category))
     .attr('stroke', '#fff')
@@ -100,9 +95,8 @@
         .transition()
         .duration(200)
         .attr('r', d => {
-          const damage = parseFloat(d.damage.replace(/[^0-9.]/g, ''));
-          if (damage > 50) return 16;
-          if (damage > 10) return 14;
+          if (d.intensity > 85) return 16;
+          if (d.intensity > 70) return 14;
           return 12;
         })
         .style('opacity', 1);
@@ -115,9 +109,8 @@
         .transition()
         .duration(200)
         .attr('r', d => {
-          const damage = parseFloat(d.damage.replace(/[^0-9.]/g, ''));
-          if (damage > 50) return 12;
-          if (damage > 10) return 10;
+          if (d.intensity > 85) return 12;
+          if (d.intensity > 70) return 10;
           return 8;
         })
         .style('opacity', 0.8);
@@ -126,7 +119,7 @@
       hideTooltip();
     })
     .on('click', function(event, d) {
-      console.log('Hurricane clicked:', d);
+      console.log('Milestone clicked:', d);
       // Add click functionality here
     });
 
@@ -169,8 +162,8 @@
       Date: ${d3.timeFormat('%B %d, %Y')(d.date)}<br>
       Location: ${d.location}<br>
       Category: ${d.category}<br>
-      Fatalities: ${d.fatalities}<br>
-      Damage: ${d.damage}
+      Intensity: ${d.intensity}/100<br>
+      Note: ${d.note}
     `)
     .style('left', (event.pageX + 10) + 'px')
     .style('top', (event.pageY - 10) + 'px');
@@ -188,7 +181,7 @@
     .attr('transform', `translate(20, 20)`);
 
   const legendItems = legend.selectAll('.legend-item')
-    .data(['major', 'catastrophic'])
+    .data(['education', 'creative', 'transition', 'work'])
     .enter()
     .append('g')
     .attr('class', 'legend-item')
@@ -207,7 +200,7 @@
     .style('fill', '#333')
     .text(d => d.charAt(0).toUpperCase() + d.slice(1));
 
-  // Add subtitle about climate change
+  // Add subtitle
   svg.append('text')
     .attr('x', width / 2)
     .attr('y', -10)
@@ -215,7 +208,7 @@
     .style('font-size', '12px')
     .style('fill', '#666')
     .style('font-style', 'italic')
-    .text('Increasing frequency and intensity linked to climate change');
+    .text('A self-portrait built from selected moments in time');
 
-  console.log('D3.js hurricane timeline loaded successfully!');
+  console.log('D3.js personal milestone timeline loaded successfully!');
 })(); 

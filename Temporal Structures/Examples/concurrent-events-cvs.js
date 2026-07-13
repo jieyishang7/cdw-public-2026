@@ -15,10 +15,10 @@
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  // Create color scale for artistic movement categories
+  // Create color scale for personal phase categories.
   const colorScale = d3.scaleOrdinal()
-    .domain(['Early Period', 'Classical', 'Modern', 'Avant-garde', 'Experimental', 'Contemporary'])
-    .range(['#8B4513', '#D2691E', '#CD853F', '#DEB887', '#F4A460', '#DAA520']);
+    .domain(['Education', 'Creative', 'Work', 'Place', 'Personal'])
+    .range(['#2f80ed', '#f2994a', '#27ae60', '#9b51e0', '#eb5757']);
 
   // Load data from CSV file
   d3.csv('events.csv').then(function(data) {
@@ -71,7 +71,7 @@
       .attr('text-anchor', 'middle')
       .style('font-size', '14px')
       .style('fill', '#333')
-      .text('Art History Timeline (1400-2024)');
+      .text('Personal Life Phases');
 
     // Add event bars (Gantt chart bars)
     const eventBars = svg.selectAll('.event-bar')
@@ -81,7 +81,7 @@
       .attr('class', 'event-bar')
       .attr('x', d => timeScale(d.start))
       .attr('y', d => yScale(d.name))
-      .attr('width', d => timeScale(d.end) - timeScale(d.start))
+      .attr('width', d => Math.max(6, timeScale(d.end) - timeScale(d.start)))
       .attr('height', yScale.bandwidth())
       .attr('fill', d => colorScale(d.category))
       .attr('stroke', '#fff')
@@ -130,7 +130,7 @@
       .attr('transform', `translate(${width - 180}, 20)`);
 
     const legendItems = legend.selectAll('.legend-item')
-      .data(['Early Period', 'Classical', 'Modern', 'Avant-garde', 'Experimental', 'Contemporary'])
+      .data(['Education', 'Creative', 'Work', 'Place', 'Personal'])
       .enter()
       .append('g')
       .attr('class', 'legend-item')
@@ -181,7 +181,7 @@
       .style('font-size', '11px')
       .style('fill', '#666')
       .style('font-style', 'italic')
-      .text('🎨 Art History Movements Timeline');
+      .text('Personal timeline loaded from events.csv');
     
     console.log('D3.js Gantt chart with CSV data loaded successfully!');
   }).catch(function(error) {
@@ -230,7 +230,7 @@
       <strong>${d.name}</strong><br>
       Period: ${d.start} - ${d.end}<br>
       Duration: ${duration} years<br>
-      Era: ${d.category}
+      Category: ${d.category}
     `)
     .style('left', (event.pageX + 10) + 'px')
     .style('top', (event.pageY - 10) + 'px');

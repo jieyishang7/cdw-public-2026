@@ -24,7 +24,7 @@
   // Load and process the CSV data
   d3.csv("synthetic-data.csv", d => ({ // Load CSV file and transform each row
     Date: d3.utcParse("%-m/%-d/%Y")(d.Date), // Parse date string to Date object
-    Value: +d.Close // Convert close price string to number (now treated as direct value)
+    Value: +d.Close // Convert the sample score to a number
   })).then(function(data) { // Handle successful data loading
     
     // Define a diverging and symmetric color scale for the full range -100 to +100
@@ -87,7 +87,7 @@
         .attr("fill", d => color(d.Value)) // Color based on direct value
       .append("title") // Add tooltip
         .text(d => `${formatDate(d.Date)}
-Value: ${formatValue(d.Value)}`); // Tooltip shows date and value
+Daily rhythm score: ${formatValue(d.Value)}`); // Tooltip shows date and value
 
     // Add month separators and labels
     const month = year.append("g") // Add group for month elements
@@ -165,7 +165,7 @@ Value: ${formatValue(d.Value)}`); // Tooltip shows date and value
       .attr("y", legendHeight - 25) // Position above gradient
       .attr("text-anchor", "middle") // Center-align text
       .style("font-size", "12px") // Set font size
-      .text("Daily Value (-100 to +100)"); // Set text content
+      .text("Daily Rhythm Score (-100 to +100)"); // Set text content
 
   }).catch(function(error) { // Handle errors in data loading
     console.error("Error loading the CSV file:", error); // Log error to console

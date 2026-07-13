@@ -1,16 +1,13 @@
 name,start,end,category
-Realism,1840,1880,Modern
-Impressionism,1860,1890,Avant-garde
-Post-Impressionism,1880,1905,Avant-garde
-Art Nouveau,1890,1910,Experimental
-Fauvism,1900,1910,Modern
-Cubism,1907,1920,Modern
-Expressionism,1905,1920,Avant-garde
-Dada,1916,1924,Experimental
-Surrealism,1924,1966,Experimental
-Abstract Expressionism,1940,1960,Contemporary
-Pop Art,1950,1970,Contemporary
-Minimalism,1960,1975,Contemporary
-Conceptual Art,1960,1980,Experimental
-Postmodernism,1970,1990,Modern
-Contemporary Art,1980,2024,Contemporary
+Primary School,2008,2014,Education
+Early Drawing Practice,2012,2017,Creative
+Middle School,2014,2017,Education
+High School,2017,2020,Education
+First Digital Tools,2018,2021,Creative
+Undergraduate Study,2020,2024,Education
+Design Studio Culture,2021,2024,Creative
+First Internship,2023,2023,Work
+Move to New York,2024,2024,Place
+Graduate Study at GSAPP,2024,2026,Education
+Computational Design Focus,2025,2026,Creative
+Current Self-Research,2026,2026,Personal

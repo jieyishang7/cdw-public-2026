@@ -15,50 +15,50 @@
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  // Sample event data with start and end dates (Gantt chart data)
-  // Socially sensitive data about community development and social services
+  // Sample personal semester data with start and end dates.
+  // Replace each row with real activities from your own semester.
   const events = [
     { 
-      name: 'Community Needs Assessment', 
-      start: new Date('2023-01-01'), 
-      end: new Date('2023-02-15'), 
-      category: 'planning',
-      progress: 0.9
+      name: 'Studio Project', 
+      start: new Date('2026-01-20'), 
+      end: new Date('2026-05-08'), 
+      category: 'studio',
+      progress: 0.85
     },
     { 
-      name: 'Housing Support Program', 
-      start: new Date('2023-01-15'), 
-      end: new Date('2023-06-30'), 
-      category: 'design',
+      name: 'Computational Workflows', 
+      start: new Date('2026-01-22'), 
+      end: new Date('2026-05-05'), 
+      category: 'coding',
+      progress: 0.75
+    },
+    { 
+      name: 'Research Reading', 
+      start: new Date('2026-02-01'), 
+      end: new Date('2026-04-20'), 
+      category: 'research',
+      progress: 0.65
+    },
+    { 
+      name: 'Portfolio Revision', 
+      start: new Date('2026-03-01'), 
+      end: new Date('2026-04-15'), 
+      category: 'career',
+      progress: 0.55
+    },
+    { 
+      name: 'Daily Routine', 
+      start: new Date('2026-01-20'), 
+      end: new Date('2026-05-08'), 
+      category: 'routine',
       progress: 0.7
     },
     { 
-      name: 'Food Security Initiative', 
-      start: new Date('2023-03-01'), 
-      end: new Date('2023-08-31'), 
-      category: 'development',
-      progress: 0.6
-    },
-    { 
-      name: 'Mental Health Services', 
-      start: new Date('2023-04-01'), 
-      end: new Date('2023-09-30'), 
-      category: 'testing',
-      progress: 0.4
-    },
-    { 
-      name: 'Youth Education Program', 
-      start: new Date('2023-05-01'), 
-      end: new Date('2023-10-31'), 
-      category: 'documentation',
-      progress: 0.8
-    },
-    { 
-      name: 'Community Outreach', 
-      start: new Date('2023-07-01'), 
-      end: new Date('2023-12-31'), 
-      category: 'deployment',
-      progress: 0.3
+      name: 'Rest and Recovery', 
+      start: new Date('2026-02-10'), 
+      end: new Date('2026-05-08'), 
+      category: 'care',
+      progress: 0.45
     }
   ];
 
@@ -78,8 +78,8 @@
 
   // Create color scale for event categories
   const colorScale = d3.scaleOrdinal()
-    .domain(['planning', 'design', 'development', 'testing', 'documentation', 'deployment'])
-    .range(['#3264a8', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57']);
+    .domain(['studio', 'coding', 'research', 'career', 'routine', 'care'])
+    .range(['#2f80ed', '#eb5757', '#27ae60', '#f2994a', '#56ccf2', '#9b51e0']);
 
   // Create x-axis (time axis)
   const xAxis = d3.axisBottom(timeScale)
@@ -263,7 +263,7 @@
     .attr('transform', `translate(${width - 150}, 20)`);
 
   const legendItems = legend.selectAll('.legend-item')
-    .data(['planning', 'design', 'development', 'testing', 'documentation', 'deployment'])
+    .data(['studio', 'coding', 'research', 'career', 'routine', 'care'])
     .enter()
     .append('g')
     .attr('class', 'legend-item')
